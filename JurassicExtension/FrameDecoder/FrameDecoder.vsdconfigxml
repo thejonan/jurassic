@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Copyright (c) Microsoft. All rights reserved.
+    Licensed under the MIT license. See LICENSE file in the project root for full license information.
+       
+    This is a configuration file that tells the debug engine about the existence of our Frame
+    Decoder component.  For documentation of the vsdconfigxml format see:
+    https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration    
+-->
+<Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
+
+  <DefineGuid Name="guidJurassicFrameDecoderCompId" Value="2719C020-0D8B-4F0C-A0E7-911A8BE13EAB"/>
+  <DefineGuid Name="guidJurassicLanguageId" Value="3A12D0B6-C26C-11D0-B442-00A0244A1DD2"/>
+
+  <ManagedComponent
+    ComponentId="guidJurassicFrameDecoderCompId"
+    ComponentLevel="63000"
+    AssemblyName="JurassicExtension"
+    Synchronized="true">
+
+    <Class Name="JurassicExtension.FrameDecoder.JurassicFrameDecoder">
+      <Implements>
+        <InterfaceGroup>
+          <Filter>
+            <LanguageId RequiredValue="guidJurassicLanguageId"/>
+          </Filter>
+          <Interface Name="IDkmLanguageFrameDecoder"/>
+        </InterfaceGroup>
+      </Implements>
+    </Class>
+
+  </ManagedComponent>
+
+</Configuration>

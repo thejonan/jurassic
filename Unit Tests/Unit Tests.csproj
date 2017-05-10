@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Jurassic.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Core\Sample Files\execute1.js" />

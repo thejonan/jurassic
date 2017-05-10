@@ -13,8 +13,8 @@
     <tags>JavaScript ECMAScript</tags>
   </metadata>
   <files>
-    <file src="..\Jurassic\bin\Release\*.dll" target="lib\net35" />
-    <file src="..\Jurassic\bin\Release\*.pdb" target="lib\net35" />
-    <file src="..\Jurassic\**\*.cs" target="src" />
+    <file src="../Jurassic/bin/Release/*.dll" target="lib/net35" />
+    <file src="../Jurassic/bin/Release/*.pdb" target="lib/net35" />
+    <file src="../Jurassic/**/*.cs" target="src" />
   </files>
 </package>
