@@ -267,7 +267,7 @@ namespace Jurassic.Compiler
                     generator = new LoggingILGenerator(generator);
                 }
 
-                if (this.Source.Path != null && this.Options.EnableDebugging == true)
+                if (this.Source.Path != null)
                 {
                     // Initialize the debugging information.
                     optimizationInfo.DebugDocument = reflectionEmitInfo.ModuleBuilder.DefineDocument(this.Source.Path, COMHelpers.LanguageType, COMHelpers.LanguageVendor, COMHelpers.DocumentType);

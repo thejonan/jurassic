@@ -49,21 +49,22 @@
     <ConcordSDKDir>$(VSSDKRoot)VisualStudioIntegration\</ConcordSDKDir>
     <VsdConfigFile>$(OutputPath)JurassicExtension.vsdconfig</VsdConfigFile>
   </PropertyGroup>
-  
   <ItemGroup>
-    <Compile Include="ExpressionCompiler\AssignmentTranslator.cs" />
-    <Compile Include="ExpressionCompiler\ContextFactory.cs" />
-    <Compile Include="ExpressionCompiler\DebugCompilerContext.cs" />
-    <Compile Include="ExpressionCompiler\ExpressionTranslator.cs" />
+    <None Include="ExpressionCompiler\ContextFactory.cs" />
+    <Compile Include="ExpressionCompiler\DebugSession.cs" />
     <Compile Include="ExpressionCompiler\JurassicExpressionCompiler.cs" />
-    <Compile Include="ExpressionCompiler\LocalVariablesTranslator.cs" />
-    <Compile Include="Formatter\JurassicFormatter.cs" />
-    <Compile Include="FrameDecoder\JurassicFrameDecoder.cs" />
+    <None Include="ExpressionCompiler\LocalVariablesTranslator.cs" />
+    <None Include="Formatter\JurassicFormatter.cs" />
+    <None Include="FrameDecoder\JurassicFrameDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <VsdConfigXmlFiles Include="ExpressionCompiler\ExpressionCompiler.vsdconfigxml" />
-    <VsdConfigXmlFiles Include="Formatter\Formatter.vsdconfigxml" />
+    <VsdConfigXmlFiles Include="ExpressionCompiler\ExpressionCompiler.vsdconfigxml">
+      <SubType>Designer</SubType>
+    </VsdConfigXmlFiles>
+    <VsdConfigXmlFiles Include="Formatter\Formatter.vsdconfigxml">
+      <SubType>Designer</SubType>
+    </VsdConfigXmlFiles>
     <VsdConfigXmlFiles Include="FrameDecoder\FrameDecoder.vsdconfigxml" />
     <None Include="app.config" />
     <None Include="packages.config">

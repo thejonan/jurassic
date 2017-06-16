@@ -131,6 +131,9 @@
     <Compile Include="Core\ScriptSource\StringScriptSource.cs" />
     <Compile Include="Core\ScriptSource\FileScriptSource.cs" />
     <Compile Include="Core\ScriptSource\ScriptSource.cs" />
+    <Compile Include="Importer\ImportedEntity.cs" />
+    <Compile Include="Importer\ImportedModule.cs" />
+    <Compile Include="Importer\ImportedScope.cs" />
     <Compile Include="Library\Array\ArrayConstructor.g.cs" />
     <Compile Include="Library\Array\ArrayAdapter.cs" />
     <Compile Include="Library\Array\ArrayInstance.g.cs" />
@@ -288,6 +291,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -720,15 +720,22 @@ namespace Jurassic
         /// Executes the given source code.  Execution is bound to the global scope.
         /// </summary>
         /// <param name="source"> The javascript source code to execute. </param>
+        /// <param name="scope"> The scope the make the evaluation into. </param>
+        /// <param name="self"> The this object reference to be used during evaluation. </param>
         /// <returns> The result of executing the source code. </returns>
         /// <exception cref="ArgumentNullException"> <paramref name="source"/> is a <c>null</c> reference. </exception>
-        public object Evaluate(ScriptSource source)
+        public object Evaluate(ScriptSource source, Scope scope = null, object self = null)
         {
+            if (scope == null)
+                scope = ObjectScope.CreateGlobalScope(this.Global);
+            if (self == null)
+                self = this.Global;
+
             var methodGen = new EvalMethodGenerator(
-                ObjectScope.CreateGlobalScope(this.Global), // The variable scope.
-                source,                                     // The source code.
-                CreateOptions(),                            // The compiler options.
-                this.Global);                               // The value of the "this" keyword.
+                scope,                  // The variable scope.
+                source,                 // The source code.
+                CreateOptions(),        // The compiler options.
+                self);                  // The value of the "this" keyword.
 
             try
             {

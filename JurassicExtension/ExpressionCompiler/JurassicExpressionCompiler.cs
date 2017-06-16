@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft. All rights reserved.
+﻿// Copyright (c) COZYROC, LLC. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using Microsoft.VisualStudio.Debugger.Clr;
@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Debugger.ComponentInterfaces;
 using Microsoft.VisualStudio.Debugger.Evaluation;
 using Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation;
 using System.Collections.ObjectModel;
+using Jurassic;
 
 namespace JurassicExtension.ExpressionCompiler
 {
@@ -52,27 +53,33 @@ namespace JurassicExtension.ExpressionCompiler
         {
             error = null;
             result = null;
-            using (DebugCompilerContext context = ContextFactory.CreateExpressionContext(inspectionContext, instructionAddress, expression.Text))
+            using (DebugSession session = DebugSession.GetInstance(inspectionContext, instructionAddress))
             {
-                context.GenerateQuery();
-
-                error = context.FirstError;
-                if (string.IsNullOrEmpty(error))
+                try
                 {
+                    var evaluation = session.Engine.Evaluate(
+                        new StringScriptSource(expression.Text),
+                        session.Scope,
+                        session.This.Value);
+
                     result = DkmCompiledClrInspectionQuery.Create(
                         instructionAddress.RuntimeInstance,
                         null,
                         expression.Language.Id,
-                        new ReadOnlyCollection<byte>(context.GetPeBytes()),
-                        context.ClassName,
-                        context.MethodName,
-                        new ReadOnlyCollection<string>(context.FormatSpecifiers),
-                        context.ResultFlags,
+                        new ReadOnlyCollection<byte>(session.Emitted),
+                        session.This.Prototype.Name,
+                        session.Function.Name,
+                        new ReadOnlyCollection<string>(session.FormatSpecifiers),
+                        session.ResultFlags,
                         DkmEvaluationResultCategory.Data,
                         DkmEvaluationResultAccessType.None,
                         DkmEvaluationResultStorageType.None,
                         DkmEvaluationResultTypeModifierFlags.None,
                         null);
+                }
+                catch (JavaScriptException jex)
+                {
+                    error = jex.Message;
                 }
             }
         }
@@ -90,19 +97,24 @@ namespace JurassicExtension.ExpressionCompiler
         /// reference point for where we need to retrieve the local variables</param>
         /// <param name="argumentsOnly">True if only arguments are needed</param>
         /// <returns>A local variables query</returns>
-        DkmCompiledClrLocalsQuery IDkmClrExpressionCompiler.GetClrLocalVariableQuery(DkmInspectionContext inspectionContext, DkmClrInstructionAddress instructionAddress, bool argumentsOnly)
+        DkmCompiledClrLocalsQuery IDkmClrExpressionCompiler.GetClrLocalVariableQuery(
+            DkmInspectionContext inspectionContext, 
+            DkmClrInstructionAddress instructionAddress, 
+            bool argumentsOnly)
         {
-            using (DebugCompilerContext context = ContextFactory.CreateLocalsContext(inspectionContext, instructionAddress, argumentsOnly))
+            using (DebugSession session = DebugSession.GetInstance(inspectionContext, instructionAddress))
             {
-                context.GenerateQuery();
+                var entities = session.FunctionArguments;
+                if (!argumentsOnly)
+                    ;
 
                 return DkmCompiledClrLocalsQuery.Create(
                     inspectionContext.RuntimeInstance,
                     null,
                     inspectionContext.Language.Id,
-                    new ReadOnlyCollection<byte>(context.GetPeBytes()),
-                    context.ClassName,
-                    new ReadOnlyCollection<DkmClrLocalVariableInfo>(context.GeneratedLocals));
+                    new ReadOnlyCollection<byte>(session.Emitted),
+                    session.This.Prototype.Name,
+                    new ReadOnlyCollection<DkmClrLocalVariableInfo>(entities));
             }
         }
 
@@ -119,31 +131,42 @@ namespace JurassicExtension.ExpressionCompiler
         /// the error message to display to the user</param>
         /// <param name="result">[Out] If compilation was successful, this is the output query to
         /// execute to perform the assignment.</param>
-        void IDkmClrExpressionCompiler.CompileAssignment(DkmLanguageExpression expression, DkmClrInstructionAddress instructionAddress, DkmEvaluationResult lValue, out string error, out DkmCompiledClrInspectionQuery result)
+        void IDkmClrExpressionCompiler.CompileAssignment(
+            DkmLanguageExpression expression, 
+            DkmClrInstructionAddress instructionAddress, 
+            DkmEvaluationResult lValue, 
+            out string error, 
+            out DkmCompiledClrInspectionQuery result)
         {
             error = null;
             result = null;
-            using (DebugCompilerContext context = ContextFactory.CreateAssignmentContext(lValue, instructionAddress, expression.Text))
+            using (DebugSession session = DebugSession.GetInstance(lValue.InspectionContext, instructionAddress))
             {
-                context.GenerateQuery();
-
-                error = context.FirstError;
-                if (string.IsNullOrEmpty(error))
+                try
                 {
+                    var evaluation = session.Engine.Evaluate(
+                        new StringScriptSource(expression.Text),
+                        session.Scope,
+                        session.This.Value);
+
                     result = DkmCompiledClrInspectionQuery.Create(
                         instructionAddress.RuntimeInstance,
                         null,
                         expression.Language.Id,
-                        new ReadOnlyCollection<byte>(context.GetPeBytes()),
-                        context.ClassName,
-                        context.MethodName,
-                        new ReadOnlyCollection<string>(context.FormatSpecifiers),
-                        DkmClrCompilationResultFlags.None,
+                        new ReadOnlyCollection<byte>(session.Emitted),
+                        session.This.Prototype.Name,
+                        session.Function.Name,
+                        new ReadOnlyCollection<string>(session.FormatSpecifiers),
+                        session.ResultFlags,
                         DkmEvaluationResultCategory.Data,
                         DkmEvaluationResultAccessType.None,
                         DkmEvaluationResultStorageType.None,
                         DkmEvaluationResultTypeModifierFlags.None,
                         null);
+                }
+                catch (JavaScriptException jex)
+                {
+                    error = jex.Message;
                 }
             }
         }
