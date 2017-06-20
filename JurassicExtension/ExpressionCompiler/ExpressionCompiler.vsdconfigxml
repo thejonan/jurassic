@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Copyright (c) Microsoft. All rights reserved.
-    Licensed under the MIT license. See LICENSE file in the project root for full license information.
-       
-    This is a configuration file that tells the debug engine about the existence of our Expression
-    Compiler component.  For documentation of the vsdconfigxml format see:
-    https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration
--->
 <Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
   <DefineGuid Name="guidJurassicExpressionCompilerCompId" Value="38DAC5DC-FC02-444A-B32E-EA4069559DF8"/>
   <DefineGuid Name="guidJurassicLanguageId" Value="3A12D0B6-C26C-11D0-B442-00A0244A1DD2"/>

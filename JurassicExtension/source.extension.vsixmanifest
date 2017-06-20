@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="JurassicExtension.thejonan.211d90fd-db69-437a-b1a6-4f9fa305844d" Version="1.0" Language="en-US" Publisher="thejonan" />
-    <DisplayName>JurassicExtension</DisplayName>
+    <Identity Id="JurassicExtension.211d90fd-db69-437a-b1a6-4f9fa305844d" Version="1.0" Language="en-US" Publisher="CozyRoc LLC" />
+    <DisplayName>Jurassic</DisplayName>
     <Description xml:space="preserve">Jurassic JavaScript Engine extension for Visual Studio with ability to debug and manipulate JavaScript files naturally from the IDE.</Description>
     <License>LICENSE.txt</License>
   </Metadata>
@@ -10,11 +10,11 @@
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[11.0,)" />
   </Installation>
   <Dependencies>
-    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.0,)" />
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Debugger" Version="[11.0,)" DisplayName="Visual Studio Debugger" />
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[11.0,)" DisplayName="Visual Studio core editor" />
+    <Prerequisite Id="Microsoft.VisualStudio.Debugger" Version="[15.0,)" DisplayName="Visual Studio Debugger" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
   </Prerequisites>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />

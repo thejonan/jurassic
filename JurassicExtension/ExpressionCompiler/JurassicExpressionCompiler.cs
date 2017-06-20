@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Debugger.ComponentInterfaces;
 using Microsoft.VisualStudio.Debugger.Evaluation;
 using Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using Jurassic;
 
 namespace JurassicExtension.ExpressionCompiler
@@ -104,9 +105,9 @@ namespace JurassicExtension.ExpressionCompiler
         {
             using (DebugSession session = DebugSession.GetInstance(inspectionContext, instructionAddress))
             {
-                var entities = session.FunctionArguments;
+                List<DkmClrLocalVariableInfo> entities = new List<DkmClrLocalVariableInfo>(session.FunctionArguments);
                 if (!argumentsOnly)
-                    ;
+                    entities.AddRange(session.LocalVariables);
 
                 return DkmCompiledClrLocalsQuery.Create(
                     inspectionContext.RuntimeInstance,

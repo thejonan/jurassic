@@ -16,11 +16,11 @@ namespace Jurassic.Library
         }
 
         // Governs how a promise will react to incoming calls to its then() method.
-        private PromiseState state = PromiseState.Pending;
+        // private PromiseState state = PromiseState.Pending;
 
         // The value with which the promise has been fulfilled or rejected, if any.  Only
         // meaningful if state is not Pending.
-        private object result;
+        // private object result;
 
         // 	A list of PromiseReaction records to be processed when/if the promise transitions
         // from the Pending state to the Fulfilled state.

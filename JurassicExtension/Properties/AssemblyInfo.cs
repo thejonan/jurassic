@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("JurassicExtension")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Managed JavaScript compiler and debugger extension.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("CozyRoc LLC")]
 [assembly: AssemblyProduct("JurassicExtension")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright (c) 2015-2017 Paul Bartrum")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

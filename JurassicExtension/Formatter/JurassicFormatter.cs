@@ -43,17 +43,7 @@ namespace JurassicExtension.Formatter
         {
             // Get the LMR type for the DkmClrType.  LMR Types (Microsoft.VisualStudio.Debugger.Metadata.Type)
             // are similar to System.Type, but represent types that live in the process being debugged.
-            Type lmrType = clrType.GetLmrType();
-
-            IrisType irisType = Utility.GetIrisTypeForLmrType(lmrType);
-            if (irisType == IrisType.Invalid)
-            {
-                // We don't know about this type.  Delegate to the C# Formatter to format the
-                // type name.
-                return inspectionContext.GetTypeName(clrType, customTypeInfo, formatSpecifiers);
-            }
-
-            return irisType.ToString();
+            return inspectionContext.GetTypeName(clrType, customTypeInfo, formatSpecifiers);
         }
 
         /// <summary>
@@ -118,33 +108,28 @@ namespace JurassicExtension.Formatter
         private string TryFormatValue(DkmClrValue value, DkmInspectionContext inspectionContext)
         {
             if (value.ValueFlags.HasFlag(DkmClrValueFlags.Error))
-            {
-                // Error message.  Just show the error.
-                return value.HostObjectValue as string;
-            }
+                return value.HostObjectValue as string; // Error message.  Just show the error.
             else if (value.IsNull)
-            {
-                return "<uninitialized>";
-            }
+                return "<undefined>";
 
-            Type lmrType = value.Type.GetLmrType();
-            IrisType irisType = Utility.GetIrisTypeForLmrType(lmrType);
-            if (irisType == IrisType.Invalid)
-            {
-                // We don't know how to format this value
-                return null;
-            }
+            //Type lmrType = value.Type.GetLmrType();
+            //IrisType irisType = Utility.GetIrisTypeForLmrType(lmrType);
+            //if (irisType == IrisType.Invalid)
+            //{
+            //    // We don't know how to format this value
+            //    return null;
+            //}
 
             uint radix = inspectionContext.Radix;
-            if (irisType.IsArray)
-            {
-                SubRange subrange = new SubRange(value.ArrayLowerBounds.First(), value.ArrayDimensions.First() - 1);
-                return string.Format(
-                    "array[{0}..{1}] of {2}",
-                    FormatInteger(subrange.From, radix),
-                    FormatInteger(subrange.To, radix),
-                    irisType.GetElementType());
-            }
+            //if (irisType.IsArray)
+            //{
+            //    SubRange subrange = new SubRange(value.ArrayLowerBounds.First(), value.ArrayDimensions.First() - 1);
+            //    return string.Format(
+            //        "array[{0}..{1}] of {2}",
+            //        FormatInteger(subrange.From, radix),
+            //        FormatInteger(subrange.To, radix),
+            //        irisType.GetElementType());
+            //}
 
             object hostObjectValue = value.HostObjectValue;
             if (hostObjectValue != null)

@@ -4,7 +4,6 @@
 using Jurassic;
 using Microsoft.VisualStudio.Debugger;
 using Microsoft.VisualStudio.Debugger.CallStack;
-using Microsoft.VisualStudio.Debugger.Clr;
 using Microsoft.VisualStudio.Debugger.ComponentInterfaces;
 using Microsoft.VisualStudio.Debugger.Evaluation;
 using System;
@@ -63,77 +62,21 @@ namespace JurassicExtension.FrameDecoder
             DkmStackWalkFrame frame,
             DkmCompletionRoutine<DkmGetFrameReturnTypeAsyncResult> completionRoutine)
         {
-            string name = TryGetFrameReturnTypeHelper(inspectionContext, frame) ?? "<Unknown>";
-            completionRoutine(new DkmGetFrameReturnTypeAsyncResult(name));
+            completionRoutine(new DkmGetFrameReturnTypeAsyncResult(TryGetFrameReturnTypeHelper(inspectionContext, frame)));
         }
 
         private static string TryGetFrameReturnTypeHelper(DkmInspectionContext inspectionContext, DkmStackWalkFrame frame)
         {
-            ImportedMethod currentMethod = TryGetCurrentMethod(inspectionContext, frame);
-            if (currentMethod == null)
-                return null;
-
-            return currentMethod.ReturnType.ToString();
+            return "object";
         }
 
         private static string TryGetFrameNameHelper(DkmInspectionContext inspectionContext, DkmStackWalkFrame frame, DkmVariableInfoFlags argumentFlags)
         {
-            ImportedMethod currentMethod = TryGetCurrentMethod(inspectionContext, frame);
-            if (currentMethod == null)
-                return null;
-
-            string name = currentMethod.Name;
-            if (string.Equals(name, "$.main", StringComparison.Ordinal))
-                return "<Main Block>";
-
-            if (argumentFlags == DkmVariableInfoFlags.None)
-                return name;
-
-            Variable[] args = currentMethod.GetParameters();
-            if (args.Length == 0)
-                return name;
-
-            StringBuilder nameBuilder = new StringBuilder();
-            nameBuilder.Append(name);
-            nameBuilder.Append('(');
-
-            bool first = true;
-            bool showTypes = argumentFlags.HasFlag(DkmVariableInfoFlags.Types);
-            bool showNames = argumentFlags.HasFlag(DkmVariableInfoFlags.Names);
-            foreach (Variable arg in args)
+            using (DebugSession session = DebugSession.GetInstance(inspectionContext, frame))
             {
-                if (first)
-                    first = false;
-                else
-                    nameBuilder.Append("; ");
-
-                IrisType argType = arg.Type;
-                if (argType.IsByRef)
-                {
-                    nameBuilder.Append("var ");
-                    argType = argType.GetElementType();
-                }
-
-                if (showNames)
-                    nameBuilder.Append(arg.Name);
-
-                if (showNames && showTypes)
-                    nameBuilder.Append(" : ");
-
-                if (showTypes)
-                    nameBuilder.Append(argType);
+                return "Jurassic ()";
             }
 
-            nameBuilder.Append(')');
-            return nameBuilder.ToString();
-        }
-
-        private static ImportedMethod TryGetCurrentMethod(DkmInspectionContext inspectionContext, DkmStackWalkFrame frame)
-        {
-            InspectionSession session = InspectionSession.GetInstance(inspectionContext.InspectionSession);
-            InspectionScope scope = session.GetScope((DkmClrInstructionAddress)frame.InstructionAddress);
-
-            return scope.TryImportCurrentMethod();
         }
     }
 }

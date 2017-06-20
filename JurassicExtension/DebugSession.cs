@@ -1,19 +1,18 @@
 ﻿// Copyright (c) COZYROC LLc. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+using Jurassic;
+using Jurassic.Compiler;
+using Jurassic.Importer;
 using Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation;
 using Microsoft.VisualStudio.Debugger.Evaluation;
 using Microsoft.VisualStudio.Debugger;
 using Microsoft.VisualStudio.Debugger.Clr;
-using Microsoft.VisualStudio.Debugger.Symbols;
-using Jurassic.Compiler;
-using Jurassic;
-using Jurassic.Importer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Microsoft.VisualStudio.Debugger.CallStack;
 
-namespace JurassicExtension.ExpressionCompiler
+namespace JurassicExtension
 {
     /// <summary>
     /// An exapsulation of
@@ -22,13 +21,12 @@ namespace JurassicExtension.ExpressionCompiler
     {
         public readonly List<string> FormatSpecifiers = new List<string>();
 
+        // private static Dictionary<DkmInstructionAddress, DebugSession> _sessions;
+
         /// <summary>
         /// The inspection-related stuff to store.
         /// </summary>
-        public readonly DkmClrInstructionAddress InstructionAddress;
         public readonly DkmInspectionContext InspectionContext;
-
-        private Dictionary<DkmClrInstructionAddress, DebugSession> _sessions;
 
         private ImportedModule  _module;
         private ImportedScope   _inspectionScope;
@@ -58,14 +56,56 @@ namespace JurassicExtension.ExpressionCompiler
             return session;
         }
 
+        public static DebugSession GetInstance(
+            DkmInspectionContext inspectionContext,
+            DkmStackWalkFrame frame)
+        {
+            DebugSession session = inspectionContext.InspectionSession.GetDataItem<DebugSession>();
+            if (session == null)
+            {
+                session = new DebugSession(inspectionContext, frame);
+                inspectionContext.InspectionSession.SetDataItem(DkmDataCreationDisposition.CreateNew, session);
+            }
+
+            return session;
+
+        }
+
+        public static DebugSession GetInstance(DkmInspectionContext inspectionContext)
+        {
+            return inspectionContext.InspectionSession.GetDataItem<DebugSession>();
+        }
+
         protected DebugSession(
             DkmInspectionContext inspectionContext,
             DkmClrInstructionAddress instructionAddress
             )
         {
             InspectionContext = inspectionContext;
-            InstructionAddress = instructionAddress;
-            BuildContext();
+            IntPtr metadataBlock;
+            uint blockSize;
+            try
+            {
+                metadataBlock = instructionAddress.ModuleInstance.GetMetaDataBytesPtr(out blockSize);
+            }
+            catch (DkmException)
+            {
+                // This can fail when dump debugging if the full heap is not available
+                return;
+            }
+
+            _module = ImportedModule.Create(metadataBlock, blockSize);
+            _currentFunction = _module.GetFunction(instructionAddress.MethodId.Token);
+            _currentThis = _module.GetObject();
+        }
+
+        protected DebugSession(
+            DkmInspectionContext inspectionContext,
+            DkmStackWalkFrame frame
+            )
+        {
+            InspectionContext = inspectionContext;
+            // TODO: Build the context from here!
         }
 
         public Scope Scope { get { return _inspectionScope; } }
@@ -97,7 +137,7 @@ namespace JurassicExtension.ExpressionCompiler
             set;
         }
 
-        public ImportedEntity[] FunctionArguments
+        public DkmClrLocalVariableInfo[] FunctionArguments
         {
             get
             {
@@ -106,7 +146,7 @@ namespace JurassicExtension.ExpressionCompiler
             }
         }
 
-        public ImportedEntity[] LocalVariables
+        public DkmClrLocalVariableInfo[] LocalVariables
         {
             get
             {
@@ -135,28 +175,6 @@ namespace JurassicExtension.ExpressionCompiler
         {
             Dispose(false);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Initialize the full context, including the scope, this variable, etc.
-        /// </summary>
-        private void BuildContext()
-        {
-            IntPtr metadataBlock;
-            uint blockSize;
-            try
-            {
-                metadataBlock = InstructionAddress.ModuleInstance.GetMetaDataBytesPtr(out blockSize);
-            }
-            catch (DkmException)
-            {
-                // This can fail when dump debugging if the full heap is not available
-                return;
-            }
-
-            _module = ImportedModule.Create(metadataBlock, blockSize);
-            _currentFunction = _module.GetFunction(InstructionAddress.MethodId.Token);
-            _currentThis = _module.GetObject();
         }
     }
 }
