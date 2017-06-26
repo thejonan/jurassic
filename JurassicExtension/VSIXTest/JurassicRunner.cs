@@ -1,6 +1,4 @@
-﻿using System;
-using Jurassic;
-using System.IO;
+﻿using Jurassic;
 
 namespace JurassicExtensionTest
 {
@@ -10,6 +8,7 @@ namespace JurassicExtensionTest
         {
             ScriptEngine jurassic = new ScriptEngine();
             jurassic.EnableDebugging = true;
+//            jurassic.EnableILAnalysis = true;
             jurassic.ExecuteFile("Script.js");
         }
     }

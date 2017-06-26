@@ -3,7 +3,7 @@
   <Metadata>
     <Identity Id="JurassicExtension.211d90fd-db69-437a-b1a6-4f9fa305844d" Version="1.0" Language="en-US" Publisher="CozyRoc LLC" />
     <DisplayName>Jurassic</DisplayName>
-    <Description xml:space="preserve">Jurassic JavaScript Engine extension for Visual Studio with ability to debug and manipulate JavaScript files naturally from the IDE.</Description>
+    <Description xml:space="preserve">Jurassic extension for Visual Studio with ability to debug and manipulate JavaScript files from the IDE.</Description>
     <License>LICENSE.txt</License>
   </Metadata>
   <Installation>
@@ -14,7 +14,6 @@
   </Dependencies>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Debugger" Version="[15.0,)" DisplayName="Visual Studio Debugger" />
-    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
   </Prerequisites>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />

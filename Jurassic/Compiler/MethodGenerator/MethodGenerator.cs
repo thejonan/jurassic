@@ -270,7 +270,11 @@ namespace Jurassic.Compiler
                 if (this.Source.Path != null)
                 {
                     // Initialize the debugging information.
-                    optimizationInfo.DebugDocument = reflectionEmitInfo.ModuleBuilder.DefineDocument(this.Source.Path, COMHelpers.LanguageType, COMHelpers.LanguageVendor, COMHelpers.DocumentType);
+                    optimizationInfo.DebugDocument = reflectionEmitInfo.ModuleBuilder.DefineDocument(
+                        this.Source.Path, 
+                        COMHelpers.LanguageType, 
+                        COMHelpers.LanguageVendor, 
+                        COMHelpers.DocumentType);
                     methodBuilder.DefineParameter(1, System.Reflection.ParameterAttributes.None, "scriptEngine");
                     methodBuilder.DefineParameter(2, System.Reflection.ParameterAttributes.None, "scope");
                     methodBuilder.DefineParameter(3, System.Reflection.ParameterAttributes.None, "thisValue");

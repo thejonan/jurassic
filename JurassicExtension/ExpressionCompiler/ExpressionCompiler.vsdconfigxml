@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
+
   <DefineGuid Name="guidJurassicExpressionCompilerCompId" Value="38DAC5DC-FC02-444A-B32E-EA4069559DF8"/>
-  <DefineGuid Name="guidJurassicLanguageId" Value="3A12D0B6-C26C-11D0-B442-00A0244A1DD2"/>
+  <DefineGuid Name="guidJurassicLanguageId" Value="5E02EBCE-95C4-4ABA-A7CD-CD7C3CC7042B"/>
 
   <ManagedComponent
     ComponentId="guidJurassicExpressionCompilerCompId"

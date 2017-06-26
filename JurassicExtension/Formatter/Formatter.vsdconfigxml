@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Copyright (c) Microsoft. All rights reserved.
-    Licensed under the MIT license. See LICENSE file in the project root for full license information.
-       
-    This is a configuration file that tells the debug engine about the existence of our Formatter
-    component.  For documentation of the vsdconfigxml format see:
-    https://github.com/Microsoft/ConcordExtensibilitySamples/wiki/Component-discovery-and-configuration
--->
 <Configuration xmlns="http://schemas.microsoft.com/vstudio/vsdconfig/2008">
 
   <DefineGuid Name="guidJurassicFormatterCompId" Value="E25FEF12-F8DE-419A-AC92-DD19621D9D2F"/>
-  <DefineGuid Name="guidJurassicLanguageId" Value="3A12D0B6-C26C-11D0-B442-00A0244A1DD2"/>
+  <DefineGuid Name="guidJurassicLanguageId" Value="5E02EBCE-95C4-4ABA-A7CD-CD7C3CC7042B"/>
 
   <ManagedComponent
     ComponentId="guidJurassicFormatterCompId"

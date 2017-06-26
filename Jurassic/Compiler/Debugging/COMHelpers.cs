@@ -11,7 +11,7 @@ namespace Jurassic.Compiler
         /// Gets the language type GUID for the symbol store.
         /// </summary>
         public static readonly Guid LanguageType =      // JScript
-            new Guid("3A12D0B6-C26C-11D0-B442-00A0244A1DD2");
+            new Guid("5E02EBCE-95C4-4ABA-A7CD-CD7C3CC7042B");
 
         /// <summary>
         /// Gets the language vendor GUID for the symbol store.
