@@ -60,7 +60,7 @@ namespace JurassicExtension.ExpressionCompiler
                 {
                     var evaluation = session.Engine.Evaluate(
                         new StringScriptSource(expression.Text),
-                        session.Scope,
+                        session.Scope.Scope,
                         session.This.Value);
 
                     result = DkmCompiledClrInspectionQuery.Create(
@@ -105,9 +105,9 @@ namespace JurassicExtension.ExpressionCompiler
         {
             using (DebugSession session = DebugSession.GetInstance(inspectionContext, instructionAddress))
             {
-                List<DkmClrLocalVariableInfo> entities = new List<DkmClrLocalVariableInfo>(session.FunctionArguments);
+                List<DkmClrLocalVariableInfo> entities = session.GetArguments();
                 if (!argumentsOnly)
-                    entities.AddRange(session.LocalVariables);
+                    entities.AddRange(session.GetVariables());
 
                 return DkmCompiledClrLocalsQuery.Create(
                     inspectionContext.RuntimeInstance,
@@ -147,7 +147,7 @@ namespace JurassicExtension.ExpressionCompiler
                 {
                     var evaluation = session.Engine.Evaluate(
                         new StringScriptSource(expression.Text),
-                        session.Scope,
+                        session.Scope.Scope,
                         session.This.Value);
 
                     result = DkmCompiledClrInspectionQuery.Create(

@@ -14,17 +14,22 @@ namespace Jurassic.Importer
     public class ImportedEntity
     {
         public readonly ImportedModule Module;
-        public readonly ImportedScope Scope;
+        public readonly EntityHandle EntityHandle;
 
-        public ImportedEntity(ImportedModule module, MethodDefinition method)
+        internal ImportedScope _scope;
+        internal string _name;
+
+        public ImportedEntity(ImportedModule module, EntityHandle entity)
         {
             Module = module;
-            Scope = null;
+            EntityHandle = entity;
+            _name = null;
+            _scope = null;
         }
 
         public string Name
         {
-            get;
+            get { return _name;  }
         }
 
         public ImportedEntity Prototype
@@ -33,6 +38,11 @@ namespace Jurassic.Importer
         }
 
         public object Value
+        {
+            get;
+        }
+
+        virtual public ImportedScope Scope
         {
             get;
         }

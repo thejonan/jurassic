@@ -28,11 +28,11 @@ namespace JurassicExtension
         /// </summary>
         public readonly DkmInspectionContext InspectionContext;
 
-        private ImportedModule  _module;
-        private ImportedScope   _inspectionScope;
-        private ImportedEntity  _currentThis;
-        private ImportedEntity  _currentFunction;
-        private ScriptEngine    _engine;
+        private ImportedModule   _module;
+        private ImportedScope    _currentScope;
+        private ImportedEntity   _currentThis;
+        private ImportedFunction _currentFunction;
+        private ScriptEngine     _engine;
 
         /// <summary>
         /// Obtaining a DebugSession instance, either from the stored value in the inspectionContext,
@@ -96,6 +96,7 @@ namespace JurassicExtension
 
             _module = ImportedModule.Create(metadataBlock, blockSize);
             _currentFunction = _module.GetFunction(instructionAddress.MethodId.Token);
+            _currentScope = _currentFunction.Scope;
             _currentThis = _module.GetObject();
         }
 
@@ -108,8 +109,8 @@ namespace JurassicExtension
             // TODO: Build the context from here!
         }
 
-        public Scope Scope { get { return _inspectionScope; } }
-        public ImportedEntity Function { get { return _currentFunction; } }
+        public ImportedScope Scope { get { return _currentScope; } }
+        public ImportedFunction Function { get { return _currentFunction; } }
         public ImportedEntity This { get { return _currentThis; } }
 
         public ScriptEngine Engine
@@ -137,22 +138,25 @@ namespace JurassicExtension
             set;
         }
 
-        public DkmClrLocalVariableInfo[] FunctionArguments
+        public List<DkmClrLocalVariableInfo> GetArguments()
         {
-            get
-            {
-                // TODO: Use _currentFunction
-                return null;
-            }
+            return BuildDkmVariableInfo(_currentFunction.Arguments);
         }
 
-        public DkmClrLocalVariableInfo[] LocalVariables
+        public List<DkmClrLocalVariableInfo> GetVariables()
         {
-            get
+            return BuildDkmVariableInfo(_currentScope.Variables);
+        }
+
+        private List<DkmClrLocalVariableInfo> BuildDkmVariableInfo(List<ImportedEntity> entityList)
+        {
+            List<DkmClrLocalVariableInfo> infoList = new List<DkmClrLocalVariableInfo>(entityList.Count);
+            foreach (var entity in entityList)
             {
-                //                return Scope.GetLocals().Select(v => v.Variable).ToArray();
-                return null;
+                // TODO: Build the DkmVariableInfoList here.
+                infoList.Add(null);
             }
+            return infoList;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -162,7 +166,7 @@ namespace JurassicExtension
                 _engine = null;
                 _currentThis = null;
                 _currentFunction = null;
-                _inspectionScope = null;
+                _currentScope = null;
             }
         }
 

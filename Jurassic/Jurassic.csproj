@@ -135,6 +135,7 @@
     <Compile Include="Core\ScriptSource\FileScriptSource.cs" />
     <Compile Include="Core\ScriptSource\ScriptSource.cs" />
     <Compile Include="Importer\ImportedEntity.cs" />
+    <Compile Include="Importer\ImportedFunction.cs" />
     <Compile Include="Importer\ImportedModule.cs" />
     <Compile Include="Importer\ImportedScope.cs" />
     <Compile Include="Library\Array\ArrayConstructor.g.cs" />

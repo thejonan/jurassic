@@ -43,18 +43,18 @@ namespace Jurassic.Importer
 
         public MetadataReader MetaReader { get { return _reader;  } }
 
-        public ImportedEntity GetFunction (int tokenId)
+        public ImportedFunction GetFunction (int tokenId)
         {
             MethodDefinitionHandle handle = (MethodDefinitionHandle)MetadataTokens.EntityHandle(tokenId);
             ImportedEntity method;
             if (!_resolvedEntities.TryGetValue(handle, out method))
             {
-                MethodDefinition methodDef = _reader.GetMethodDefinition(handle);
-                method = new ImportedEntity(this, methodDef);
+
+                method = new ImportedFunction(this, handle);
                 _resolvedEntities.Add(handle, method);
             }
 
-            return method;
+            return (ImportedFunction)method;
         }
 
         public ImportedEntity GetObject()
