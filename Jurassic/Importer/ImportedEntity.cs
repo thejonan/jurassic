@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Jurassic.Compiler;
+using System.Reflection.Metadata;
+
 
 namespace Jurassic.Importer
 {
@@ -14,10 +16,10 @@ namespace Jurassic.Importer
         public readonly ImportedModule Module;
         public readonly ImportedScope Scope;
 
-        public ImportedEntity(ImportedModule module, ImportedScope scope)
+        public ImportedEntity(ImportedModule module, MethodDefinition method)
         {
             Module = module;
-            Scope = scope;
+            Scope = null;
         }
 
         public string Name
