@@ -33,16 +33,15 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="JurassicRunner.cs" />
     <Content Include="Script.js" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Jurassic, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Compile Include="JurassicRunner.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Jurassic, Version=3.0.0.0, Culture=neutral, PublicKeyToken=42f272f6dd312a2c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Jurassic\bin\Debug\Jurassic.dll</HintPath>
-      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

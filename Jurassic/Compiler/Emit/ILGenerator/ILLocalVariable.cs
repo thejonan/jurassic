@@ -114,8 +114,8 @@ namespace Jurassic.Compiler
                 throw new ArgumentNullException(nameof(local));
             this.UnderlyingLocal = local;
             this.name = name;
-            //if (name != null)
-            //    local.SetLocalSymInfo(name);
+            if (name != null)
+                local.SetLocalSymInfo(name);
         }
 
         /// <summary>

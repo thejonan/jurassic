@@ -1,4 +1,5 @@
 ﻿using Jurassic;
+using Jurassic.Library;
 
 namespace JurassicExtensionTest
 {
@@ -7,10 +8,9 @@ namespace JurassicExtensionTest
         private static void Main(string[] args)
         {
             ScriptEngine jurassic = new ScriptEngine();
+            jurassic.SetGlobalValue("console", new FirebugConsole(jurassic));
             jurassic.EnableDebugging = true;
-//            jurassic.EnableILAnalysis = true;
             jurassic.ExecuteFile("Script.js");
         }
     }
 }
-

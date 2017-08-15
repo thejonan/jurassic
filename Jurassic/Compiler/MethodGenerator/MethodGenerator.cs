@@ -179,7 +179,7 @@ namespace Jurassic.Compiler
             optimizationInfo.Source = this.Source;
 
             ILGenerator generator;
-            if (this.Options.EnableDebugging == false)
+            if (!this.Options.EnableDebugging)
             {
                 // DynamicMethod requires full trust because of generator.LoadMethodPointer in the
                 // FunctionExpression class.
@@ -197,7 +197,7 @@ namespace Jurassic.Compiler
                 generator = new DynamicILGenerator(dynamicMethod);
 #endif
 
-                if (this.Options.EnableILAnalysis == true)
+                if (this.Options.EnableILAnalysis)
                 {
                     // Replace the generator with one that logs.
                     generator = new LoggingILGenerator(generator);
@@ -271,10 +271,10 @@ namespace Jurassic.Compiler
                 {
                     // Initialize the debugging information.
                     optimizationInfo.DebugDocument = reflectionEmitInfo.ModuleBuilder.DefineDocument(
-                        this.Source.Path, 
-                        COMHelpers.LanguageType, 
-                        COMHelpers.LanguageVendor, 
-                        COMHelpers.DocumentType);
+                        this.Source.Path,
+                        Guid.Empty, //COMHelpers.LanguageType, 
+                        Guid.Empty, //COMHelpers.LanguageVendor, 
+                        Guid.Empty); // COMHelpers.DocumentType);
                     methodBuilder.DefineParameter(1, System.Reflection.ParameterAttributes.None, "scriptEngine");
                     methodBuilder.DefineParameter(2, System.Reflection.ParameterAttributes.None, "scope");
                     methodBuilder.DefineParameter(3, System.Reflection.ParameterAttributes.None, "thisValue");

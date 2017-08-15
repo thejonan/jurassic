@@ -36,7 +36,9 @@ Constructor.prototype.findIndex = function (needle) {
     return idx;
 }
 
-globalFuncion(1, 3);
+console.info("Sum: %d", globalFuncion(1, 3));
 
 var obj = new Constructor(["Julie", "John", "Juliet"]);
-obj.findIndex(/Ju.+/);
+
+var idx = obj.findIndex(/Ju.+/);
+console.info("Found at: " + idx);
